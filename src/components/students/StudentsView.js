@@ -2,10 +2,12 @@ import { useState, useEffect } from "react"
 import axios from "axios";
 import {FaEdit, FaEye, FaIcons, FaPen, FaPenAlt, FaPenFancy, FaRegEdit, FaTrashAlt, FaUserEdit} from "react-icons/fa"
 import {Link} from 'react-router-dom'
+import Search from "../common/Search";
 
 
 const StudentsView = () => {
     const [students, setStudents] = useState([]);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         loadStudents();
@@ -30,9 +32,12 @@ const StudentsView = () => {
     return (
         <section>
             <div>
-                <h1 className="text-center text-uppercase mb-5 font-bold">Student List</h1>
+                <h1 className="text-center text-uppercase mb-4 font-bold">Student List</h1>
             </div>
-            <table className="table table-bordered table-hover shadow">
+            <div className="container">
+                <Search search={search} setSearch={setSearch}/>
+            </div>
+            <table className="table table-bordered table-hover shadow width container">
                 <thead>
                     <tr className="text-center">
                         <th>No.</th>
@@ -48,7 +53,10 @@ const StudentsView = () => {
                     </tr>
                 </thead>
                 <tbody className="text-center">
-                    {students.map((student, index) => (
+                    {students.filter((st) => 
+                    st.firstName.toLowerCase().includes(search)
+                    )
+                    .map((student, index) => (
                         <tr key={student.id}>
                             <th scope="row" key={index}>
                                 {index + 1}
